@@ -1,0 +1,10 @@
+---
+
+apiVersion: pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: crossplane-k8s
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  package: xpkg.upbound.io/devops-toolkit/dot-kubernetes:v0.12.17

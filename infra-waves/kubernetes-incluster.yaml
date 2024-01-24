@@ -4,11 +4,15 @@ kind: ServiceAccount
 metadata:
   name: crossplane-provider-kubernetes
   namespace: crossplane-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: crossplane-provider-kubernetes
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 subjects:
 - kind: ServiceAccount
   name: crossplane-provider-kubernetes
@@ -22,6 +26,8 @@ apiVersion: pkg.crossplane.io/v1alpha1
 kind: ControllerConfig
 metadata:
   name: crossplane-provider-kubernetes
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   serviceAccountName: crossplane-provider-kubernetes
 ---
@@ -29,6 +35,8 @@ apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: crossplane-provider-kubernetes
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0
   controllerConfigRef:
