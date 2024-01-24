@@ -9,7 +9,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: production
+  project: default
   source:
     chart: crossplane
     repoURL: crossplane-stable/crossplane
