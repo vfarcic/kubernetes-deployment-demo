@@ -1,0 +1,14 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: google
+spec:
+  provider:
+    gcpsm:
+      auth:
+        secretRef:
+          secretAccessKeySecretRef:
+            name: gcp-creds
+            key: creds
+            namespace: crossplane-system
+      projectID: dot-20240124165932
