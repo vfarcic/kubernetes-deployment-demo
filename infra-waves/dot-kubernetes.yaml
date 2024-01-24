@@ -6,5 +6,6 @@ metadata:
   name: crossplane-k8s
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   package: xpkg.upbound.io/devops-toolkit/dot-kubernetes:v0.12.17

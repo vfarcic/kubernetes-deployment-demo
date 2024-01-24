@@ -5,5 +5,6 @@ metadata:
   name: crossplane-sql
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.35
