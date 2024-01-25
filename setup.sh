@@ -110,6 +110,12 @@ Press the enter key to continue."
     yq --inplace ".spec.projectID = \"$PROJECT_ID\"" \
         crossplane-packages/google-config.yaml
 
+    yq --inplace ".spec.projectID = \"$PROJECT_ID\"" \
+        infra/google-config.yaml
+
+    yq --inplace ".spec.projectID = \"$PROJECT_ID\"" \
+        infra-waves/google-config.yaml
+
 elif [[ "$HYPERSCALER" == "aws" ]]; then
 
     AWS_ACCESS_KEY_ID=$(gum input --placeholder "AWS Access Key ID" --value "$AWS_ACCESS_KEY_ID")
@@ -196,4 +202,4 @@ chmod +x setup-argocd.sh
 
 chmod +x destroy-kubectl.sh
 
-chmod +x destroy-argocd.sh
+chmod +x destroy.sh

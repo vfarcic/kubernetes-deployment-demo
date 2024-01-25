@@ -32,6 +32,26 @@ rm -f .env
 
 kind create cluster
 
+kubectl create namespace a-team
+
+kubectl create namespace crossplane-system
+
+if [[ "$HYPERSCALER" == "google" ]]; then
+
+    kubectl --namespace crossplane-system \
+        create secret generic gcp-creds \
+        --from-file creds=./gcp-creds.json
+
+elif [[ "$HYPERSCALER" == "aws" ]]; then
+
+    kubectl --namespace crossplane-system \
+        create secret generic aws-creds \
+        --from-file creds=./aws-creds.conf \
+        --from-literal accessKeyID=$AWS_ACCESS_KEY_ID \
+        --from-literal secretAccessKey=$AWS_SECRET_ACCESS_KEY
+
+fi
+
 ###########
 # Argo CD #
 ###########
