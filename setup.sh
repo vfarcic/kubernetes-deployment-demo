@@ -52,6 +52,16 @@ REGISTRY_PASSWORD=$(gum input \
     --placeholder "Container image registry password (e.g., ghcr.io/vfarcic)" \
     --value "$REGISTRY_PASSWORD")
 
+###########
+# Cluster #
+###########
+
+kind create cluster
+
+kubectl create namespace a-team
+
+kubectl create namespace crossplane-system
+
 ##############
 # Crossplane #
 ##############
@@ -116,6 +126,10 @@ Press the enter key to continue."
     yq --inplace ".spec.projectID = \"$PROJECT_ID\"" \
         infra-waves/google-config.yaml
 
+    kubectl --namespace crossplane-system \
+        create secret generic gcp-creds \
+        --from-file creds=./gcp-creds.json
+
 elif [[ "$HYPERSCALER" == "aws" ]]; then
 
     AWS_ACCESS_KEY_ID=$(gum input --placeholder "AWS Access Key ID" --value "$AWS_ACCESS_KEY_ID")
@@ -132,13 +146,17 @@ aws_access_key_id = $AWS_ACCESS_KEY_ID
 aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
 " >aws-creds.conf
 
+    kubectl --namespace crossplane-system \
+        create secret generic aws-creds \
+        --from-file creds=./aws-creds.conf \
+        --from-literal accessKeyID=$AWS_ACCESS_KEY_ID \
+        --from-literal secretAccessKey=$AWS_SECRET_ACCESS_KEY
+
 fi
 
 ############
 # Registry #
 ############
-
-kind create cluster
 
 kubectl create secret docker-registry push-secret \
     --docker-server=$REGISTRY_SERVER \
@@ -166,8 +184,6 @@ elif [[ "$HYPERSCALER" == "aws" ]]; then
 
 fi
 
-kind delete cluster
-
 ####################
 # External Secrets #
 ####################
@@ -192,15 +208,20 @@ elif [[ "$HYPERSCALER" == "aws" ]]; then
 
 fi
 
+###########
+# Argo CD #
+###########
+
+helm upgrade --install argocd argo-cd \
+    --repo https://argoproj.github.io/argo-helm \
+    --namespace argocd --create-namespace \
+    --values argocd/helm-values.yaml --wait
+
 ########
 # Misc #
 ########
 
-chmod +x setup-kubectl.sh
-
 chmod +x setup-argocd.sh
-
-chmod +x destroy-kubectl.sh
 
 chmod +x destroy.sh
 
