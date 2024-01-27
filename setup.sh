@@ -221,8 +221,6 @@ helm upgrade --install argocd argo-cd \
 # Misc #
 ########
 
-chmod +x setup-argocd.sh
-
 chmod +x destroy.sh
 
 echo "## Setup is complete." | gum format
